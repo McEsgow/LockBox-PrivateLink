@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Drag and Drop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #drop-area {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #file-info {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>LockBox PrivateLink</h1>
+
+    <h2>PrivateLink</h2>
+    <h3>Key Receiver</h3>
+    <div class="privateKey">
+        <label for="privateKey">Private Key:</label>
+        <input name="privateKey">
+        <button>generate strong key</button>
+        (Dont share this with anyone)
+    </div>
+    <br>
+    <div class="publicKey">
+        <label for="publicKey">Public Key:</label>
+        <input name="publicKey">
+        <button>copy</button> (Send this to the secret key sender)
+    </div>
+
+    <h3>Key Sender</h3>
+
+    <div class="encryptionKey">
+        <label for="encryptionKey">Shared Secret Key:</label>
+        <input name="encryptionKey">
+        <button>copy</button>
+        <button>generate strong key</button> (Send this to the secret key receiver)
+    </div>
+    <br>
+    <div class="receiversPublicKey">
+        <label for="receiversPublicKey">Receiver's Public Key:</label>
+        <input name="receiversPublicKey"> (Paste here)
+    </div>
+    <br>
+    <div class="encryptedSecret">
+        <label for="encryptedSecret">Encrypted Secret Key:</label>
+        <input name="encryptedSecret">
+        <button>copy</button> (Send this to the secret key receiver)
+    </div>
+    <h2>LockBox</h2>
+    
+
+
+    <button>Encrypt File</button>
+
+    <div id="drop-area" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
+        <p>Drag &amp; Drop a file here</p>
+    </div>
+
+    <div id="file-info"></div>
+
+    <script>
+        function handleDrop(event) {
+            event.preventDefault();
+
+            // Get the dropped file
+            const file = event.dataTransfer.files[0];
+
+            // Display file information
+            const fileInfo = `File Name: ${file.name}<br>
+                               File Size: ${file.size} bytes`;
+
+            document.getElementById('file-info').innerHTML = fileInfo;
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+        }
+    </script>
+
+</body>
+</html>
