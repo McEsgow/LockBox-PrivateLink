@@ -8,6 +8,7 @@
         :root {
             --purple: #7D4698;
             --dark-purple: #59316B;
+            --light-purple: #b577d4;
             --green: #68B030;
             --grey: #F8F9FA;
             --dark-grey: #757575;
@@ -83,6 +84,13 @@
             color: var(--purple);
         }
 
+        button:disabled {
+        background-color: #c2a7cf; /* Light gray */
+        color: white; /* Dark gray text */
+        cursor: not-allowed; /* Display disabled cursor */
+        border: 1px solid #aa93b5;
+        }
+
         input {
             border: 1px solid var(--purple);
             color: var(--purple);
@@ -108,6 +116,13 @@
             padding-top: 2px;
         }
 
+        #file-status {
+            color: var(--green);
+            font-style: italic;
+            margin-top: 10px;
+            margin-bottom: -5px;
+        }
+
     </style>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="{{ url_for('static', filename='app.js') }}"></script>
@@ -119,16 +134,19 @@
     
     <div class="encryptionKey">
         <label for="encryptionKey">Secret-key:</label>
-        <input name="encryptionKey">
+        <input id="lockBoxKeyInput" name="encryptionKey">
     </div>
     <br>
     <div id="drop-area" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
         <p>Drag &amp; Drop a file here</p>
     </div>
     
-    <div id="file-info"></div>
+    <div id="file-info">Filename: <br> Size: </div>
     <br>
-    <button onclick="encryptFile()">Encrypt File</button> <button onclick="decryptFile()">Decrypt File</button>
+    <button id="encryptFileButton" onclick="encryptFileButton()" disabled>Encrypt File</button> <button id="decryptFileButton" onclick="decryptFileButton()" disabled>Decrypt File</button>
+    <div id="file-status"></div>
+
+    <br>
     <h2>PrivateLink</h2>
     <h3>Key Receiver</h3>
     <h4>Key Pair</h4>

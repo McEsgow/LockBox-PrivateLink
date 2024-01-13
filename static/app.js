@@ -1,23 +1,73 @@
+var b64DroppedFile = ''
+var droppedFileName = ''
 function handleDrop(event) {
   event.preventDefault();
-  // Handle file drop logic
-  // Implement as needed
+
+  // Access the dropped files
+  const files = event.dataTransfer.files;
+
+  // Check if any file is dropped
+  if (files.length > 0) {
+    const file = files[0];
+    const reader = new FileReader();
+
+    // Read the file as data URL, which will be base64 encoded
+    reader.readAsDataURL(file);
+
+    // Define a callback function to handle the result
+    reader.onload = function () {
+      // The result contains the base64 encoded file data
+      b64DroppedFile = reader.result.split(',')[1];
+      droppedFileName = file.name;
+      updateFileInfo(file.name, file.size);
+    };
+
+    // Handle potential errors during file reading
+    reader.onerror = function (error) {
+      console.error('Error reading the file:', error);
+    };
+  }
+}
+
+function encryptFileButton() {
+  encryptFile(b64DroppedFile, droppedFileName);
+}
+
+function decryptFileButton() {
+  decryptFile(b64DroppedFile, droppedFileName);
+}
+
+function updateFileInfo(filename, filesize) {
+  const fileInfoDiv = document.getElementById('file-info');
+  fileInfoDiv.innerHTML = `Filename: ${filename}<br>Size: ${(filesize / 1024 /1024).toFixed(2)} MB`;
+
+  if (filename.endsWith('.lb')) {
+    document.getElementById('encryptFileButton').disabled = true
+    document.getElementById('decryptFileButton').disabled = false
+  }
+  else {
+    document.getElementById('encryptFileButton').disabled = false
+    document.getElementById('decryptFileButton').disabled = true
+  }
+
 }
 
 function handleDragOver(event) {
   event.preventDefault();
 }
 
-function encryptFile() {
-  var encryptionKey = document.getElementById('encryptionKeyInput').value;
+function encryptFile(b64FileData, fileName) {
+  var encryptionKey = document.getElementById('lockBoxKeyInput').value;
   // AJAX call to Python backend for file encryption
   $.ajax({
       type: 'POST',
       url: '/encrypt',
-      data: { key: encryptionKey },
+      data: { file: b64FileData, filename: fileName, encryptionKey:encryptionKey},
       success: function(response) {
-          // Handle success
-          console.log(response);
+        document.getElementById('file-status').innerHTML = response.status;
+        setTimeout(function () {
+          document.getElementById('file-status').innerHTML = '';
+        }, 5000);
       },
       error: function(error) {
           // Handle error
@@ -26,16 +76,19 @@ function encryptFile() {
   });
 }
 
-function decryptFile() {
-  var encryptionKey = document.getElementById('encryptionKeyInput').value;
-  // AJAX call to Python backend for file decryption
+function decryptFile(b64FileData, fileName) {
+  var encryptionKey = document.getElementById('lockBoxKeyInput').value;
+  // AJAX call to Python backend for file encryption
   $.ajax({
       type: 'POST',
       url: '/decrypt',
-      data: { key: encryptionKey },
+      data: { file: b64FileData, filename: fileName, encryptionKey:encryptionKey},
       success: function(response) {
-          // Handle success
-          console.log(response);
+        console.log(response);
+        document.getElementById('file-status').innerHTML = response.status;
+        setTimeout(function () {
+          document.getElementById('file-status').innerHTML = '';
+        }, 5000);
       },
       error: function(error) {
           // Handle error
@@ -151,6 +204,10 @@ function encryptSecretKey(secretKeyInputId, publicKeyInputID, outputId){
         console.error(error);
     }
 });
+}
+
+function ecryptFile() {
+  
 }
 
 // EVENTLISTENERS

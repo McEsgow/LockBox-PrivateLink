@@ -2,7 +2,7 @@
 Description
 
 ## Todo
- - LockBox file encryption and decryption
+ - Text Encryption and Decryption
  - Documentation
    - Description
      - explain how public and private keys work

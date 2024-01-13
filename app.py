@@ -9,7 +9,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 import base64
 
 import private_link
-
+import lock_box
 
 
 app = Flask(__name__)
@@ -20,17 +20,21 @@ def index():
 
 @app.route('/encrypt', methods=['POST'])
 def encrypt():
-    # ... (your encryption logic)
-    return jsonify({'status': 'success'})
+    base_64_file_data = request.form.get('file')
+    file_name = request.form.get('filename')
+    key = request.form.get('encryptionKey')
+    return jsonify({'status': lock_box.encrypt_file(base_64_file_data, file_name, key)})
 
 @app.route('/decrypt', methods=['POST'])
 def decrypt():
-    # ... (your decryption logic)
-    return jsonify({'status': 'success'})
+    base_64_file_data = request.form.get('file')
+    file_name = request.form.get('filename')
+    key = request.form.get('encryptionKey')
+    return jsonify({'status': lock_box.decrypt_file(base_64_file_data, file_name, key)})
 
 @app.route('/generate_key')
 def generate_key():
-    return jsonify({'key': secrets.token_urlsafe(140)})
+    return jsonify({'key': secrets.token_urlsafe(128)})
 
 @app.route('/generate_private_key')
 def generate_private_key():
