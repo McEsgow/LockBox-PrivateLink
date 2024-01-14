@@ -15,9 +15,6 @@ from cryptography.hazmat.backends import default_backend
 from flask import Flask, render_template, request, jsonify, send_from_directory
 
 class lockBox:
-    def copy_file_to_clipboard(self, file_path):
-        command = f"powershell Set-Clipboard -LiteralPath {os.path.abspath(file_path)}"
-        os.system(command)
 
     def encrypt_file(self, file_base64, file_name, key):
         """Encrypts a file using AES encryption and the provided key."""
@@ -47,7 +44,6 @@ class lockBox:
                 # Prepend the IV to the ciphertext
                 encrypted_file.write(iv + encrypted_data)
 
-            self.copy_file_to_clipboard(new_file_name)
             return "File Encrypted Successfully"
         except Exception as e:
             print(e)
