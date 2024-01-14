@@ -3,127 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LockBox PrivateLink</title>
-    <style>
-        :root {
-            --purple: #7D4698;
-            --dark-purple: #59316B;
-            --light-purple: #b577d4;
-            --green: #68B030;
-            --grey: #F8F9FA;
-            --dark-grey: #757575;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: white;
-            color: black;
-        }
-
-        h1 {
-            background-color: var(--purple);
-            color: white;
-            padding: 15px;
-        }
-
-        h2 {
-            background-color: var(--purple);
-            color: white;
-            padding: 5px;
-            width: 50%
-        }
-
-        h3 {
-            color: black;
-            margin-top:30px;
-            margin-bottom: 10px;
-        }
-
-        h4 {
-            margin-top:4px;
-            margin-bottom: 2px;
-            color: black;
-        }
-
-        #drop-area {
-            border: 2px dashed var(--purple);
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            color: var(--dark-grey);
-            background-color: var(--grey);
-            width: 200px
-        }
-
-        #file-info {
-            margin-top: 20px;
-            color: var(--purple);
-        }
-
-        label {
-            color: var(--dark-purple);
-        }
-
-        button {
-            background-color: var(--purple);
-            color: white;
-            border: 1px solid var(--dark-purple);
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        button:active{
-            background-color: var(--green);
-        }
-
-        .copy-button {
-            background-color: var(--grey);
-            color: var(--purple);
-        }
-
-        button:disabled {
-        background-color: #c2a7cf; /* Light gray */
-        color: white; /* Dark gray text */
-        cursor: not-allowed; /* Display disabled cursor */
-        border: 1px solid #aa93b5;
-        }
-
-        input {
-            border: 1px solid var(--purple);
-            color: var(--purple);
-            background-color: white;
-            border-radius: 4px;
-            padding: 5px;
-            margin-right: 10px;
-        }
-
-        .output-field {
-            border: 1px dashed var(--purple);
-            color: var(--green);
-            background-color: var(--grey);
-        }
-
-        #encryptedSecret {
-            width: 200px;
-        }
-
-        .note {
-            color: var(--dark-grey);
-            font-size: 12px;
-            padding-top: 2px;
-        }
-
-        #file-status {
-            color: var(--green);
-            font-style: italic;
-            margin-top: 10px;
-            margin-bottom: -5px;
-        }
-
-    </style>
+    <title>LB-PL Webui</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="{{ url_for('static', filename='app.js') }}"></script>
 </head>
@@ -131,82 +12,108 @@
 
     <h1>LockBox PrivateLink</h1>
     <h2>LockBox</h2>
-    
     <div class="encryptionKey">
         <label for="encryptionKey">Secret-key:</label>
-        <input id="lockBoxKeyInput" name="encryptionKey">
+        <input id="lockBoxFileKeyInput" name="encryptionKey">
     </div>
     <br>
-    <div id="drop-area" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
-        <p>Drag &amp; Drop a file here</p>
+    <div class="container">
+        <div class="subelement">
+            <h3>File</h3>
+            <br>
+            <div id="drop-area" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
+                <p>Drag &amp; Drop a file here</p>
+            </div>
+            <div id="file-info">Filename: <br> Size: </div>
+            <br>
+            <button id="encryptFileButton" onclick="encryptFileButton()" disabled>Encrypt File</button> <button id="decryptFileButton" onclick="decryptFileButton()" disabled>Decrypt File</button>
+            <div id="file-status"></div>
+            <button class="secondary-button" style="width:185px" onclick="openFolder()">Open Folder</button>
+        </div>
+        <div class="subelement">
+            <h3>Text</h3>
+            <label for="longText">Enter your text:</label>
+            <br>
+            <textarea id="longText" name="longText" rows="9" cols="60"></textarea>
+            <br>
+            <button id="encryptTextButton" onclick="encryptTextButton()">Encrypt Text</button> <button id="decryptTextButton" onclick="decryptTextButton()">Decrypt Text</button>
+            <div id="file-status"></div>
+
+        </div>
     </div>
-    
-    <div id="file-info">Filename: <br> Size: </div>
-    <br>
-    <button id="encryptFileButton" onclick="encryptFileButton()" disabled>Encrypt File</button> <button id="decryptFileButton" onclick="decryptFileButton()" disabled>Decrypt File</button>
-    <div id="file-status"></div>
 
     <br>
     <h2>PrivateLink</h2>
-    <h3>Key Receiver</h3>
-    <h4>Key Pair</h4>
-    <div class="privateKey">
-        <label for="privateKey">Private key:</label>
-        <input id="privateKeyInput" name="privateKey">
-        <button onclick="generatePrivateKey('privateKeyInput', 'publicKeyOutput')">Generate key</button>
-        <br>
-        <div class="note">(Don't share this with anyone)</div>
-    </div>
-    <br>
-    <div class="publicKey">
-        <label for="publicKey">Public key:</label>
-        <input id="publicKeyOutput" name="publicKey" class="output-field" readonly>
-        <button class="copy-button" onclick="copyToClipboard('publicKeyOutput')">Copy</button><br>
-        <div class="note">(Send this to the secret-key sender)</div>
-    </div>
-    <br>
-    <h4>Decrypt secret-key</h4>
-    <div class="encryptedKey">
-        <label for="encryptedKey">Encrypted secret-key:</label>
-        <input id="encryptedKeyInput" name="encryptedKey">
-        <button onclick="decryptSecretKey('encryptedKeyInput', 'privateKeyInput', 'decryptedSecretKeyOutput')">Decrypt</button>
-        <div class="note">(Encrypted Key, you got from Key sender)</div>
-    </div>
-    <br>
-    <div class="decryptedSecretKey">
-        <label for="decryptedSecretKey">Decrypted secret-key:</label>
-        <input id="decryptedSecretKeyOutput" name="decryptedSecretKey" class="output-field" readonly>
-        <button class="copy-button" onclick="copyToClipboard('publicKey')">Copy</button><br>
-        <div class="note">(Use this for future message encryption and decryption)</div>
+    <div class="container">
+        <div class="subelement">
+            <h3>Key Receiver</h3>
+            <h4>Key Pair</h4>
+            <div class="privateKey">
+                <label for="privateKey">Private key:</label>
+                <input id="privateKeyInput" name="privateKey">
+                <button onclick="generatePrivateKey('privateKeyInput', 'publicKeyOutput')">Generate key</button>
+                <br>
+                <div class="note">(Don't share this with anyone)</div>
+            </div>
+            <br>
+            <div class="publicKey">
+                <label for="publicKey">Public key:</label>
+                <input id="publicKeyOutput" name="publicKey" class="output-field" readonly>
+                <button class="secondary-button" onclick="copyToClipboard('publicKeyOutput')">Copy</button><br>
+                <div class="note">(Send this to the secret-key sender)</div>
+            </div>
+            <br>
+            <h4>Decrypt secret-key</h4>
+            <div class="encryptedKey">
+                <label for="encryptedKey">Encrypted secret-key:</label>
+                <input id="encryptedKeyInput" name="encryptedKey">
+                <button onclick="decryptSecretKey('encryptedKeyInput', 'privateKeyInput', 'decryptedSecretKeyOutput')">Decrypt</button>
+                <br>
+                <div class="note">(Encrypted Key, you got from Key sender)</div>
+            </div>
+            <br>
+            <div class="decryptedSecretKey">
+                <label for="decryptedSecretKey">Decrypted secret-key:</label>
+                <input id="decryptedSecretKeyOutput" name="decryptedSecretKey" class="output-field" readonly>
+                <button class="secondary-button" onclick="copyToClipboard('decryptedSecretKeyOutput')">Copy</button><br>
+                <div class="note">(Use this for future message encryption and decryption)</div>
+            </div>
+
+        </div>
+
+        <div class="subelement">
+            <h3>Key Sender</h3>
+            <div class="receiversPublicKey">
+                <label for="receiversPublicKey">Receiver's public key:</label>
+                <input id= "receiversPublicKeyInput" name="receiversPublicKey">
+                <br>
+                <div class="note">(Paste here)</div>
+            </div>
+            <br>
+            <div class="encryptionKey">
+                <label for="encryptionKey">Secret-key:</label>
+                <input id="encryptionKeyInput" name="encryptionKey">
+                <button class="secondary-button" onclick="copyToClipboard('encryptionKeyInput')">Copy</button>
+                <button onclick="generateStrongKey('encryptionKeyInput')">Generate strong key</button>
+                <button onclick="encryptSecretKey('encryptionKeyInput', 'receiversPublicKeyInput', 'encryptedSecretOutput')">Encrypt</button>
+                <br>
+                <div class="note">(Use this for future message encryption and decryption)</div>
+            </div>
+            <br>
+
+            <div class="encryptedSecret">
+                <label for="encryptedSecret">Encrypted secret-key: </label>
+                <input id="encryptedSecretOutput" name="encryptedSecret" class="output-field" readonly>
+                <button class="secondary-button" onclick="copyToClipboard('encryptedSecretOutput')">Copy</button>
+                <br>
+                <div class="note">(Send this to the secret key receiver)</div>
+            </div>
+        </div>
     </div>
 
-    
-    <h3>Key Sender</h3>
-    <div class="receiversPublicKey">
-        <label for="receiversPublicKey">Receiver's public key:</label>
-        <input id= "receiversPublicKeyInput" name="receiversPublicKey">
-        <br>
-        <div class="note">(Paste here)</div>
-    </div>
     <br>
-    <div class="encryptionKey">
-        <label for="encryptionKey">Secret-key:</label>
-        <input id="encryptionKeyInput" name="encryptionKey">
-        <button class="copy-button" onclick="copyToClipboard('encryptionKeyInput')">Copy</button>
-        <button onclick="generateStrongKey('encryptionKeyInput')">Generate strong key</button>
-        <button onclick="encryptSecretKey('encryptionKeyInput', 'receiversPublicKeyInput', 'encryptedSecretOutput')">Encrypt</button>
-        <br>
-        <div class="note">(Use this for future message encryption and decryption)</div>
-    </div>
     <br>
-
-    <div class="encryptedSecret">
-        <label for="encryptedSecret">Encrypted secret-key: </label>
-        <input id="encryptedSecretOutput" name="encryptedSecret" class="output-field" readonly>
-        <button class="copy-button" onclick="copyToClipboard('encryptedSecretOutput')">Copy</button>
-        <br>
-        <div class="note">(Send this to the secret key receiver)</div>
-    </div>
-
+    <br>
+    <p class="lisence" xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/McEsgow/LockBox-PrivateLink">LockBox PrivateLink</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/McEsgow">Eskil Westdahl</a> is licensed under <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC-SA 4.0<img style="height:10px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg"><img style="height:10px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg"><img style="height:10px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg"><img style="height:10px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg"></a></p>
 </body>
 </html>

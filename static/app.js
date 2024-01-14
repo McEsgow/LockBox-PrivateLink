@@ -57,7 +57,7 @@ function handleDragOver(event) {
 }
 
 function encryptFile(b64FileData, fileName) {
-  var encryptionKey = document.getElementById('lockBoxKeyInput').value;
+  var encryptionKey = document.getElementById('lockBoxFileKeyInput').value;
   // AJAX call to Python backend for file encryption
   $.ajax({
       type: 'POST',
@@ -77,7 +77,7 @@ function encryptFile(b64FileData, fileName) {
 }
 
 function decryptFile(b64FileData, fileName) {
-  var encryptionKey = document.getElementById('lockBoxKeyInput').value;
+  var encryptionKey = document.getElementById('lockBoxFileKeyInput').value;
   // AJAX call to Python backend for file encryption
   $.ajax({
       type: 'POST',
@@ -147,7 +147,6 @@ function extractPublicKey(outputID, privateKey) {
 });
 }
 
-
 function copyToClipboard(inputId) {
   // Get the input element by ID
   const inputElement = document.getElementById(inputId);
@@ -206,8 +205,52 @@ function encryptSecretKey(secretKeyInputId, publicKeyInputID, outputId){
 });
 }
 
-function ecryptFile() {
-  
+function encryptTextButton() {
+  // AJAX call to Python backend for strong key generation
+  $.ajax({
+    type: 'POST',
+    url: '/encrypt_text',
+    data: { key: document.getElementById('lockBoxFileKeyInput').value, text: document.getElementById('longText').value },
+    success: function(response) {
+        // Handle success
+        document.getElementById('longText').value = response;
+    },
+    error: function(error) {
+        // Handle error
+        console.error(error);
+    }
+});
+}
+
+function decryptTextButton() {
+  // AJAX call to Python backend for strong key generation
+  $.ajax({
+    type: 'POST',
+    url: '/decrypt_text',
+    data: { key: document.getElementById('lockBoxFileKeyInput').value, text: document.getElementById('longText').value },
+    success: function(response) {
+        // Handle success
+        document.getElementById('longText').value = response;
+    },
+    error: function(error) {
+        // Handle error
+        console.error(error);
+    }
+});
+}
+
+function openFolder() {
+  $.ajax({
+    type: 'GET',
+    url: '/open_folder',
+    success: function(response) {
+        // Update the input field with the generated key
+    },
+    error: function(error) {
+        // Handle error
+        console.error(error);
+    }
+});
 }
 
 // EVENTLISTENERS

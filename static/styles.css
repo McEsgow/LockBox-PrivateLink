@@ -1,0 +1,142 @@
+/* styles.css */
+
+:root {
+  --purple: #7D4698;
+  --dark-purple: #59316B;
+  --light-purple: #b577d4;
+  --green: #68B030;
+  --grey: #F8F9FA;
+  --dark-grey: #757575;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: white;
+  color: black;
+}
+
+h1,
+h2 {
+  background-color: var(--purple);
+  color: white;
+  padding: 15px;
+}
+
+h2 {
+  padding: 5px;
+}
+
+h3 {
+  color: black;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+h4 {
+  margin-top: 4px;
+  margin-bottom: 2px;
+  color: black;
+}
+
+#drop-area {
+  border: 2px dashed var(--purple);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  color: var(--dark-grey);
+  background-color: var(--grey);
+  width: 200px;
+}
+
+#file-info {
+  margin-top: 20px;
+  color: var(--purple);
+}
+
+label {
+  color: var(--dark-purple);
+}
+
+button {
+  background-color: var(--purple);
+  color: white;
+  border: 1px solid var(--dark-purple);
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:active {
+  background-color: var(--green);
+}
+
+.secondary-button {
+  background-color: var(--grey);
+  color: var(--purple);
+}
+
+button:disabled {
+  background-color: #c2a7cf;
+  color: white;
+  cursor: not-allowed;
+  border: 1px solid #aa93b5;
+}
+
+input {
+  border: 1px solid var(--purple);
+  color: var(--purple);
+  background-color: white;
+  border-radius: 4px;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.output-field {
+  border: 1px dashed var(--purple);
+  color: var(--green);
+  background-color: var(--grey);
+}
+
+#encryptedSecret {
+  width: 200px;
+}
+
+.note {
+  color: var(--dark-grey);
+  font-size: 12px;
+  padding-top: 2px;
+}
+
+#file-status {
+  color: var(--green);
+  font-style: italic;
+  margin-top: 10px;
+  margin-bottom: -5px;
+}
+
+.container {
+  display: flex;
+  margin-top: -25px;
+}
+
+.subelement {
+  margin-right: 100px;
+}
+
+@media (max-width: 800px) {
+  .container {
+      flex-direction: column;
+  }
+}
+
+textarea {
+  resize: none;
+  margin-bottom: 16px;
+  margin-top: 7px;
+}
+
+.lisence {
+  font-size: 10px;
+}
