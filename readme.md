@@ -31,7 +31,7 @@ LockBox PrivateLink is a locally hosted webapp that is used to encrypt and decry
 
 #### Source/Development Version:
 - Python 3.10.9 or later
-
+- git
 
 ### Installation Steps
 
