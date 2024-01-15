@@ -45,7 +45,7 @@ LockBox PrivateLink is a locally hosted webapp that is used to encrypt and decry
 1. Clone the Repository:
 
     ```bash
-    git clone https://github.com/McEsgow/LockBox-PrivateLink [optional_directory]
+    git clone https://github.com/McEsgow/LockBox-PrivateLink
     cd LockBox-PrivateLink
     ```
 
