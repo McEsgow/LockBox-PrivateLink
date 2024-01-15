@@ -35,10 +35,9 @@ LockBox PrivateLink is a locally hosted webapp that is used to encrypt and decry
 
 ### Installation Steps
 
-#### Precompiled (exe) Version:
-1. Download zip from releases
-2. Extract at a desired location
-3. Run LockBox-PrivateLink.exe
+#### Precompiled Version:
+1. Download `LockBox-PrivateLink.exe`
+2. Run `LockBox-PrivateLink.exe`
 
 #### Source/Development Version:
 
@@ -51,7 +50,7 @@ LockBox PrivateLink is a locally hosted webapp that is used to encrypt and decry
 
 2. Set Up Virtual Environment and Install Dependencies:
 
-    For Windows: Run `create-venv.bat` or the following commands:
+    For Windows:
     ```bash
     python -m venv venv
     .\venv\Scripts\activate
@@ -65,18 +64,24 @@ LockBox PrivateLink is a locally hosted webapp that is used to encrypt and decry
     python -m pip install -r requirements.txt
     ```
 
+3. (Optional) Compile Executable (Windows Only)
+
+   ```bash
+   pyinstaller LockBox-PrivateLink.spec
+   ```
+
 ## Usage
 
 ### Starting the Application
 
-#### Precompiled (exe) Version (Windows):
-1. Run `webui.exe`.
+#### Precompiled Version (Windows):
+1. Run `LockBox-PrivateLink.exe`.
 2. Open [http://127.0.0.1:58538](http://127.0.0.1:58538) in a web browser.
 
 #### Source/Development Version (Windows):
 1. Run `webui.bat` or the following commands:
    ```bash
-   cd [INSTALLATION PATH]/LockBox-PrivateLink/
+   cd [INSTALLATION PATH]
    .\venv\Scripts\activate
    python webui.py
    ```
@@ -91,6 +96,8 @@ LockBox PrivateLink is a locally hosted webapp that is used to encrypt and decry
    ```
 2. Open [http://127.0.0.1:58538](http://127.0.0.1:58538) in a web browser.
 
+#### Compiled from Source:
+1. Run `[INSTALLATION PATH]/dist/LockBox-PrivateLink.exe
 
 ### Securely Sharing the `secret-key`
 To encrypt and decrypt files and messages using LockBox, both parties need the same `secret-key`. To ensure the `secret-key` remains confidential, use PrivateLink to securely exchange it.
