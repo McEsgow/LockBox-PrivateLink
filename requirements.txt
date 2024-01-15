@@ -1,3 +1,5 @@
+C:\test
+altgraph==0.17.4
 blinker==1.7.0
 cffi==1.16.0
 click==8.1.7
@@ -7,5 +9,10 @@ Flask==3.0.0
 itsdangerous==2.1.2
 Jinja2==3.1.3
 MarkupSafe==2.1.3
+packaging==23.2
+pefile==2023.2.7
 pycparser==2.21
+pyinstaller==6.3.0
+pyinstaller-hooks-contrib==2023.12
+pywin32-ctypes==0.2.2
 Werkzeug==3.0.1

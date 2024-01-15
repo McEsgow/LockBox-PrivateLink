@@ -1,2 +1,4 @@
-LockBox/*
-venv/*
+/LockBox/
+/venv/
+/build/
+/dist/

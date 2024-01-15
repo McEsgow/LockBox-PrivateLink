@@ -15,7 +15,17 @@ from cryptography.hazmat.backends import default_backend
 from flask import Flask, render_template, request, jsonify, send_from_directory
 
 class lockBox:
-
+    def __init__(self) -> None:
+        folder_path = 'LockBox/'
+        # Check if the folder already exists
+        if not os.path.exists(folder_path):
+            # Create the folder if it doesn't exist
+            os.makedirs(folder_path)
+            print(f"Folder '{folder_path}' created successfully.")
+        else:
+            print(f"Folder '{folder_path}' already exists.")
+            
+        pass
     def encrypt_file(self, file_base64, file_name, key):
         """Encrypts a file using AES encryption and the provided key."""
 
